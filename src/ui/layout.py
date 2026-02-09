@@ -31,9 +31,7 @@ def build_ui(
 
                     with gr.Column(scale=5):
                         gr.Markdown("### Ask whatever about Travel plan")
-                        chatbot_display = gr.Chatbot(
-                            label="Current Chat..", height=500, show_copy_button=True, bubble_full_width=False
-                        )
+                        chatbot_display = gr.Chatbot(label="Current Chat..", height=500)
                         user_input = gr.MultimodalTextbox(
                             placeholder="Insert Message(메세지를 입력하세요).. (file, image, pdf available (가능))",
                             file_count="multiple",
