@@ -46,7 +46,7 @@ class TravelAgencyChatbot:
             for a_path in image_paths:
                 url = images.image_to_url(a_path)
                 if url:
-                    parts.append({"type": "image_url", "imgae_url": {"url": url}})
+                    parts.append({"type": "image_url", "image_url": {"url": url}})
             history_messages.append(HumanMessage(content=parts))
 
         cfg = openai_client.ModelConfig(

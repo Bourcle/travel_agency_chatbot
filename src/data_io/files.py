@@ -138,3 +138,31 @@ def update_preview_and_context(multi_modal: dict) -> tuple[str, str, str]:
     res = (pdf_path, extracted_txt, extracted_txt)
 
     return res
+
+
+def sync_histories(history: list) -> str:
+    """Render chat history to a single markdown/text blob.
+
+    Args:
+        history (list): The chat history
+
+    Returns:
+        str: Rendered chat history
+    """
+
+    res = ""
+
+    if not history:
+        res = "아직 대화가 없습니다."
+    lines: list[str] = list()
+    if isinstance(history[0], dict) and "role" in history[0]:
+        for msg in history:
+            role = msg.get("role", "")
+            content = msg.get("content", "")
+            if role == "user":
+                lines.append(f"You: {content}")
+            elif role == "assitant":
+                lines.append(f"Bot: {content}")
+    res = "\n\n".join(lines) if lines else "아직 대화가 없습니다."
+
+    return res
