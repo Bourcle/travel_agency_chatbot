@@ -2,7 +2,6 @@ from langchain_core.messages import HumanMessage, AIMessage
 from typing import Any
 
 
-@staticmethod
 def store_chat_history(history: list[dict[str, str]]) -> list:
     """Store chat history from Gradio ChatInterface history between user and ai.
     Moreover, transfer it to Langchain messages

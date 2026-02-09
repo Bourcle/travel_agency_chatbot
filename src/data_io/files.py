@@ -76,3 +76,93 @@ def extract_text_from_file(file_path: str) -> tuple[Optional[str], str]:
         res = (None, f"File read error {e}")
 
     return res
+
+
+def update_file_context(files: list) -> str:
+    """Store text what was extracted from input files
+
+    Args:
+        files (list): A list of input files. They could be PDF or text.
+
+    Returns:
+        str: Extracted text from files.
+    """
+
+    res = ""
+
+    if not files:
+        return res
+
+    parts = list()
+    for file in files:
+        file_path = (
+            getattr(file, "path", None) or getattr(file, "name", None) or (file if isinstance(file, str) else None)
+        )
+        if not file_path:
+            continue
+        file_type = (file_path.split(".")[-1] or "").lower()
+        if file_type in ["pdf", "xlsx", "xls", "txt", "csv", "json", "md", "log", "yaml", "yml"]:
+            _, txt = extract_text_from_file(file_path)
+            if txt and txt.strip():
+                parts.append(f"[{os.path.basename(file_path)}]\n{txt}")
+
+    res = "\n\n".join(parts).strip()
+
+    return res
+
+
+def update_preview_and_context(multi_modal: dict) -> tuple[str, str, str]:
+    """Process a Gardio multimodal textbox input to update pdf preview and file context.
+
+    Args:
+        multi_modal (dict): Input from Gardio MultimodalTextbox.
+
+    Returns:
+        tuple[str, str, str]: A tuple containing pdf path, extracted text, file context.
+    """
+
+    res = ("", "", "")
+
+    files = (multi_modal or {}).get("files") or list()
+    extracted_txt = update_file_context(files)
+
+    pdf_path = None
+    for file in reversed(files):
+        file_path = (
+            getattr(file, "path", None) or getattr(file, "name", None) or (file if isinstance(file, str) else None)
+        )
+        if file_path and file_path.lower().endswith(".pdf"):
+            pdf_path = file_path
+            break
+
+    res = (pdf_path, extracted_txt, extracted_txt)
+
+    return res
+
+
+def sync_histories(history: list) -> str:
+    """Render chat history to a single markdown/text blob.
+
+    Args:
+        history (list): The chat history
+
+    Returns:
+        str: Rendered chat history
+    """
+
+    res = ""
+
+    if not history:
+        res = "아직 대화가 없습니다."
+    lines: list[str] = list()
+    if isinstance(history[0], dict) and "role" in history[0]:
+        for msg in history:
+            role = msg.get("role", "")
+            content = msg.get("content", "")
+            if role == "user":
+                lines.append(f"You: {content}")
+            elif role == "assitant":
+                lines.append(f"Bot: {content}")
+    res = "\n\n".join(lines) if lines else "아직 대화가 없습니다."
+
+    return res
