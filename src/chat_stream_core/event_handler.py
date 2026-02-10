@@ -1,7 +1,7 @@
 from chat_stream_core.session_mapper import SessionManager
 from chat_stream_core.chatbot import TravelAgencyChatbot
 from typing import Any, Generator, Callable
-from utils.utils import ModelSettings
+from utils.utils import ModelConfig
 import gradio as gr
 
 
@@ -94,12 +94,12 @@ class ChatEventHandlers:
 
         return res
 
-    def process_chat_message(self, message: Any, settings: ModelSettings) -> Generator[str, None, None]:
+    def process_chat_message(self, message: Any, model_config: ModelConfig) -> Generator[str, None, None]:
         """Generate Answer to user message or file
 
         Args:
             message (Any): User message or uploaded files
-            settings (ModelSettings): AI model settings
+            model_config (ModelConfig): AI model setting config
 
         Yields:
             Generator[str, None, None]: Streaming answer chunks
@@ -119,12 +119,7 @@ class ChatEventHandlers:
         response_stream = self.bot.answer_invoke(
             message=message,
             chat_history=session.history,
-            system_type=settings.system_type,
-            model_name=settings.model_name,
-            temperature=settings.temperature,
-            top_p=settings.top_p,
-            presence_penalty=settings.presence_penalty,
-            frequence_penalty=settings.frequency_penalty,
+            model_config=model_config,
             file_context=file_ctx,
         )
 
@@ -146,8 +141,8 @@ class ChatEventHandlers:
         top_p: float,
         presence_penalty: float,
         frequency_penalty: float,
-    ) -> ModelSettings:
-        """Update model settings
+    ) -> ModelConfig:
+        """Update model config settings
 
         Args:
             system_type (str): system type.
@@ -158,10 +153,10 @@ class ChatEventHandlers:
             frequency_penalty (float): frequency penalty
 
         Returns:
-            ModelSettings: updated settings
+            ModelConfig: updated config settings
         """
 
-        res = ModelSettings(
+        res = ModelConfig(
             system_type=system_type,
             model_name=model_name,
             temperature=temperature,
