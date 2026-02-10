@@ -5,7 +5,7 @@ from typing import Any
 from config import SYSTEM_MSG_TYPES
 from data_io import images
 from langchain_core.messages import HumanMessage
-
+from utils.utils import ModelConfig
 
 class TravelAgencyChatbot:
     def __init__(self):
@@ -16,12 +16,7 @@ class TravelAgencyChatbot:
         self,
         message: Any,
         chat_history: list,
-        system_type: str,
-        model_name: str = "gpt-4o-mini",
-        temperature: float = 0.3,
-        top_p: float = 0.9,
-        presence_penalty: float = 0.3,
-        frequence_penalty: float = 0.3,
+        model_config: ModelConfig,
         file_context: str = "",
     ):
 
@@ -34,7 +29,7 @@ class TravelAgencyChatbot:
             image_paths = list()
 
         history_messages = history.store_chat_history(chat_history)
-        system_message = SYSTEM_MSG_TYPES.get(system_type, SYSTEM_MSG_TYPES["기본"]).strip()
+        system_message = SYSTEM_MSG_TYPES.get(model_config.system_type, SYSTEM_MSG_TYPES["Basic(기본)"]).strip()
 
         if file_context and file_context.strip():
             system_message += "\n\nReference context from uploaded file:\n" + file_context
@@ -49,14 +44,7 @@ class TravelAgencyChatbot:
                     parts.append({"type": "image_url", "image_url": {"url": url}})
             history_messages.append(HumanMessage(content=parts))
 
-        cfg = openai_client.ModelConfig(
-            model=model_name,
-            temperature=temperature,
-            top_p=top_p,
-            presence_penalty=presence_penalty,
-            frequency_penalty=frequence_penalty,
-        )
-        model = openai_client.load_llm_model(cfg)
+        model = openai_client.load_llm_model(model_config)
 
         chain = self.prompt | model | self.parser
 

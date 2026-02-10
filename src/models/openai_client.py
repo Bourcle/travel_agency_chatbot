@@ -1,14 +1,5 @@
 from langchain_openai import ChatOpenAI
-from dataclasses import dataclass
-
-
-@dataclass
-class ModelConfig:
-    model: str
-    temperature: float = 0.3
-    top_p: float = 0.9
-    presence_penalty: float = 0.3
-    frequency_penalty: float = 0.2
+from utils.utils import ModelConfig
 
 
 def load_llm_model(cfg: ModelConfig) -> ChatOpenAI:
@@ -22,7 +13,7 @@ def load_llm_model(cfg: ModelConfig) -> ChatOpenAI:
     """
 
     res = ChatOpenAI(
-        model=cfg.model,
+        model=cfg.model_name,
         temperature=cfg.temperature,
         top_p=cfg.top_p,
         streaming=True,

@@ -61,7 +61,7 @@ def build_ui(
                         system_type = gr.Dropdown(
                             label="Select your Travel Style(여행스타일)",
                             choices=list(system_msg_types.keys()),
-                            value="기본",
+                            value="Basic(기본)",
                         )
                         model_name = gr.Dropdown(label="Select AI models", choices=model_to_select, value="gpt-4o-mini")
                     with gr.Column():
