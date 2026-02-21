@@ -7,6 +7,7 @@ from data_io import images
 from langchain_core.messages import HumanMessage
 from utils.utils import ModelConfig
 
+
 class TravelAgencyChatbot:
     def __init__(self):
         self.prompt = propmts.build_prompt()

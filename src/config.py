@@ -59,14 +59,16 @@ BASIC_SYSTEM_MSG: str = """\
 """
 
 SYSTEM_MSG_TYPES: dict[str, str] = {
-    "Basic(기본)": BASIC_SYSTEM_MSG + """\
+    "Basic(기본)": BASIC_SYSTEM_MSG
+    + """\
 <style>
     <name>Default<\name>
     <tone>Clear, practical, structured<\tone>
     <priority>balanced<\priority>
 <\style>
 """,
-    "Emotional(감성)": BASIC_SYSTEM_MSG + """\
+    "Emotional(감성)": BASIC_SYSTEM_MSG
+    + """\
 <style>
     <name>Emotional<\name>
     <tone>Warm, immersive, story-driven<\tone>
@@ -82,7 +84,8 @@ SYSTEM_MSG_TYPES: dict[str, str] = {
     <\writing>
 <\style>
 """,
-    "Cost Efficiency(가성비)": BASIC_SYSTEM_MSG + """\
+    "Cost Efficiency(가성비)": BASIC_SYSTEM_MSG
+    + """\
 <style>
     <name>Budget<\name>
     <tone>Direct, cost-aware<\tone>
@@ -98,7 +101,8 @@ SYSTEM_MSG_TYPES: dict[str, str] = {
     <\budget_rules>
 <\style>
 """,
-    "Route Efficiency(동선효율)": BASIC_SYSTEM_MSG + """\
+    "Route Efficiency(동선효율)": BASIC_SYSTEM_MSG
+    + """\
 <style>
     <name>RouteEfficiency<\name>
     <tone>Efficient, time-saving<\tone>
@@ -112,7 +116,8 @@ SYSTEM_MSG_TYPES: dict[str, str] = {
     <\route_rules>
 <\style>
 """,
-    "MBTI": BASIC_SYSTEM_MSG + """\
+    "MBTI": BASIC_SYSTEM_MSG
+    + """\
 <style>
     <name>MBTI<\name>
     <tone>Insightful, personalized based on MBTI<\tone>
@@ -124,7 +129,7 @@ SYSTEM_MSG_TYPES: dict[str, str] = {
         <rule>Explain why each recommendation fits that MBTI (1 line).<\rule>
     <\mbti_rules>
 <\style>
-"""
+""",
 }
 
 MODEL_TO_SELECT = ["gpt-4o-mini", "gpt-4.1-mini", "gpt-4.1-nano"]
